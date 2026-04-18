@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+@theme {
+  --font-bebas: "Impact", "Arial Black", sans-serif;
+  --font-cormorant: "Georgia", serif;
+  --font-dm-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-dm-mono: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  --color-black: #060606;
+  --color-black-2: #111111;
+  --color-gold: #C8A84B;
+  --color-gold-light: #E8C96B;
+  --color-gold-dark: #8B6914;
+  --color-white: #F5F5F0;
+  --color-gray: #888888;
+  --color-gray-dark: #333333;
+}
+
+:root {
+  --black: #060606;
+  --black-2: #111111;
+  --gold: #C8A84B;
+  --gold-light: #E8C96B;
+  --gold-dark: #8B6914;
+  --white: #F5F5F0;
+  --gray: #888888;
+  --gray-dark: #333333;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--black);
+  color: var(--white);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+  cursor: none; /* Custom cursor requested */
+}
+
+/* Scrollbar hidden for smoother view */
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  scrollbar-width: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hide default cursor on interactive elements */
+a, button, input, textarea {
+  cursor: none !important;
+}
+
+/* Custom Cursor Elements */
+#cursor-circle, #cursor-dot {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 9999;
+}
+
+#cursor-circle {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--gold);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), wight 0.2s, height 0.2s;
+  /* Will be updated via JS for mouse position */
+}
+
+#cursor-circle.hover {
+  transform: translate(-50%, -50%) scale(3);
+  background-color: rgba(200, 168, 75, 0.1);
+  border-width: 0.5px;
+}
+
+#cursor-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--gold);
+}
+
+/* Smooth Scroll Container */
+.smooth-scroll-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.smooth-scroll-content {
+  will-change: transform;
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ticker Animation */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 15s linear infinite;
+}
+
+.perspective-container {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
