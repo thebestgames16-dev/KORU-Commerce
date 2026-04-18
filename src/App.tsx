@@ -18,9 +18,13 @@ const ScrollToTop = () => {
   return null;
 };
 
-function Home() {
+interface HomeProps {
+  mobileMenuOpen: boolean;
+  setMobileMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,16 +65,6 @@ function Home() {
           </button>
         </div>
       </nav>
-
-      {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 bg-[#FFFFFF] z-[999] flex flex-col items-center justify-center transition-all duration-500 origin-top ${mobileMenuOpen ? 'opacity-100 scale-y-100 pointer-events-auto' : 'opacity-0 scale-y-0 pointer-events-none'}`}>
-        <div className="flex flex-col items-center gap-8">
-          <a href="#leistungen" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111] touch-manipulation" style={{ touchAction: 'manipulation' }}>Leistungen</a>
-          <a href="#projekte" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111] touch-manipulation" style={{ touchAction: 'manipulation' }}>Projekte</a>
-          <a href="#ueber-uns" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111] touch-manipulation" style={{ touchAction: 'manipulation' }}>Über uns</a>
-          <a href="#kontakt" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111] touch-manipulation" style={{ touchAction: 'manipulation' }}>Kontakt</a>
-        </div>
-      </div>
 
       <section className="relative h-screen flex items-center justify-center bg-[#FFFFFF]">
         <HeroCanvas />
@@ -260,12 +254,39 @@ function Home() {
 }
 
 export default function App() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Cursor />
+
+      {/* Mobile Menu Overlay - ROOT LEVEL OUTSIDE SMOOTH SCROLL */}
+      <div className={`fixed inset-0 bg-[#FFFFFF] z-[9999] flex flex-col items-center justify-center transition-all duration-500 origin-top ${mobileMenuOpen ? 'opacity-100 scale-y-100 pointer-events-auto' : 'opacity-0 scale-y-0 pointer-events-none'}`}>
+        
+        {/* Same layout logic as Nav to perfectly position X over the Hamburger Menu */}
+        <div className="absolute top-0 left-0 right-0 py-8">
+          <div className="container mx-auto px-10 max-w-7xl flex justify-end">
+            <button 
+              className="text-[#111111] pointer-events-auto touch-manipulation hover:text-[#C8A84B] transition-colors"
+              style={{ touchAction: 'manipulation' }}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <X size={28} />
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col items-center gap-8">
+          <a href="#leistungen" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111] touch-manipulation" style={{ touchAction: 'manipulation' }}>Leistungen</a>
+          <a href="#projekte" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111] touch-manipulation" style={{ touchAction: 'manipulation' }}>Projekte</a>
+          <a href="#ueber-uns" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111] touch-manipulation" style={{ touchAction: 'manipulation' }}>Über uns</a>
+          <a href="#kontakt" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111] touch-manipulation" style={{ touchAction: 'manipulation' }}>Kontakt</a>
+        </div>
+      </div>
+
       <Routes>
-        <Route path="/" element={<SmoothScroll><Home /></SmoothScroll>} />
+        <Route path="/" element={<SmoothScroll><Home mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen} /></SmoothScroll>} />
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/datenschutz" element={<Datenschutz />} />
       </Routes>
