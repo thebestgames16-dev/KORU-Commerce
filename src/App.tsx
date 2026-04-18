@@ -32,9 +32,9 @@ function Home() {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-6 bg-white/95 backdrop-blur-md border-b border-[#EBEBEB] shadow-[0_1px_2px_rgba(0,0,0,0.02)]' : 'py-8 bg-transparent'}`}>
+      <nav className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${scrolled ? 'py-6 bg-white/95 backdrop-blur-md border-b border-[#EBEBEB] shadow-[0_1px_2px_rgba(0,0,0,0.02)]' : 'py-8 bg-transparent'}`}>
         <div className="container mx-auto px-10 max-w-7xl flex items-center justify-between">
-          <a href="#" className="flex items-center gap-3 relative z-50">
+          <a href="#" className="flex items-center gap-3 relative z-[1000]">
             <LogoSvg />
             <span className="font-bebas text-2xl tracking-widest text-[#111111] hidden sm:block">KORU COMMERCE</span>
           </a>
@@ -52,19 +52,23 @@ function Home() {
             </a>
           </div>
 
-          <button className="md:hidden relative z-50 text-[#111111]" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
+          <button 
+            className="md:hidden relative z-[1000] text-[#111111] pointer-events-auto touch-manipulation" 
+            style={{ touchAction: 'manipulation' }}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
             {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
       </nav>
 
       {/* Mobile Menu Overlay */}
-      <div className={`fixed inset-0 bg-[#FFFFFF] z-40 flex flex-col items-center justify-center transition-all duration-500 origin-top ${mobileMenuOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-0'}`}>
+      <div className={`fixed inset-0 bg-[#FFFFFF] z-[999] flex flex-col items-center justify-center transition-all duration-500 origin-top ${mobileMenuOpen ? 'opacity-100 scale-y-100 pointer-events-auto' : 'opacity-0 scale-y-0 pointer-events-none'}`}>
         <div className="flex flex-col items-center gap-8">
-          <a href="#leistungen" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111]">Leistungen</a>
-          <a href="#projekte" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111]">Projekte</a>
-          <a href="#ueber-uns" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111]">Über uns</a>
-          <a href="#kontakt" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111]">Kontakt</a>
+          <a href="#leistungen" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111] touch-manipulation" style={{ touchAction: 'manipulation' }}>Leistungen</a>
+          <a href="#projekte" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111] touch-manipulation" style={{ touchAction: 'manipulation' }}>Projekte</a>
+          <a href="#ueber-uns" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111] touch-manipulation" style={{ touchAction: 'manipulation' }}>Über uns</a>
+          <a href="#kontakt" onClick={() => setMobileMenuOpen(false)} className="font-bebas text-5xl tracking-wider hover:text-[#C8A84B] transition-colors text-[#111111] touch-manipulation" style={{ touchAction: 'manipulation' }}>Kontakt</a>
         </div>
       </div>
 
