@@ -254,7 +254,7 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
                 Lass uns dein nächstes Projekt besprechen. Ob komplettes Re-Design, SEO-Strategie oder Conversion-Optimierung.
               </p>
               
-              <a href="#" className="inline-flex items-center gap-4 px-8 py-4 bg-[#C8A84B] text-[#111111] font-dm-sans font-medium hover:-translate-y-1 transition-transform duration-300">
+              <a href="https://wa.me/4915906227948?text=Hallo%20KORU%20Commerce%2C%20ich%20interessiere%20mich%20für%20eine%20Website." target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-4 px-8 py-4 bg-[#C8A84B] text-[#111111] font-dm-sans font-medium hover:-translate-y-1 transition-transform duration-300">
                 <MessageSquare size={20} /> Via WhatsApp chatten
               </a>
             </div>
