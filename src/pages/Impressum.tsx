@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import { ArrowLeft } from 'lucide-react';
 
 export default function Impressum() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 py-[32px] backdrop-blur-[10px] bg-[#060606]/80 border-b border-[#C8A84B]/10">
