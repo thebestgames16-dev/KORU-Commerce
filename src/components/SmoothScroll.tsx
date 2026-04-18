@@ -9,6 +9,9 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     const content = contentRef.current;
     if (!container || !content) return;
 
+    const isMobile = window.matchMedia('(max-width: 768px)').matches || 'ontouchstart' in window;
+    const lerpFactor = isMobile ? 0.8 : 0.08;
+
     let currentY = 0;
     let targetY = window.scrollY;
     let animationFrameId: number;
@@ -25,7 +28,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     };
 
     const animate = () => {
-      currentY += (targetY - currentY) * 0.08;
+      currentY += (targetY - currentY) * lerpFactor;
       
       if (Math.abs(targetY - currentY) < 0.01) {
         currentY = targetY;
@@ -77,6 +80,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       cancelAnimationFrame(animationFrameId);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
+      document.body.style.height = ''; 
     };
   }, []);
 
