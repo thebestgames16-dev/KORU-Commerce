@@ -1,43 +1,42 @@
 @import "tailwindcss";
 
 @theme {
-  --font-bebas: "Impact", "Arial Black", sans-serif;
-  --font-cormorant: "Georgia", serif;
-  --font-dm-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-dm-mono: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-bebas: "Bebas Neue", sans-serif;
+  --font-cormorant: "Cormorant Garamond", serif;
+  --font-dm-sans: "DM Sans", sans-serif;
+  --font-dm-mono: "DM Mono", monospace;
 
-  --color-black: #060606;
-  --color-black-2: #111111;
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #FAFAF8;
+  --color-bg-tertiary: #F5F2ED;
   --color-gold: #C8A84B;
-  --color-gold-light: #E8C96B;
-  --color-gold-dark: #8B6914;
-  --color-white: #F5F5F0;
-  --color-gray: #888888;
-  --color-gray-dark: #333333;
+  --color-gold-light: #E8D5A3;
+  --color-text-primary: #111111;
+  --color-text-secondary: #888888;
+  --color-border: #EBEBEB;
 }
 
 :root {
-  --black: #060606;
-  --black-2: #111111;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #FAFAF8;
+  --bg-tertiary: #F5F2ED;
   --gold: #C8A84B;
-  --gold-light: #E8C96B;
-  --gold-dark: #8B6914;
-  --white: #F5F5F0;
-  --gray: #888888;
-  --gray-dark: #333333;
+  --gold-light: #E8D5A3;
+  --text-primary: #111111;
+  --text-secondary: #888888;
+  --border: #EBEBEB;
 }
 
 html, body {
   margin: 0;
   padding: 0;
-  background-color: var(--black);
-  color: var(--white);
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: "DM Sans", sans-serif;
   overflow-x: hidden;
-  cursor: none; /* Custom cursor requested */
+  cursor: none; 
 }
 
-/* Scrollbar hidden for smoother view */
 ::-webkit-scrollbar {
   display: none;
 }
@@ -46,13 +45,11 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Hide default cursor on interactive elements */
 a, button, input, textarea {
   cursor: none !important;
 }
 
-/* Custom Cursor Elements */
-#cursor-circle, #cursor-dot {
+#cursor-circle {
   pointer-events: none;
   position: fixed;
   top: 0;
@@ -62,27 +59,10 @@ a, button, input, textarea {
   z-index: 9999;
 }
 
-#cursor-circle {
-  width: 24px;
-  height: 24px;
-  border: 1px solid var(--gold);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), wight 0.2s, height 0.2s;
-  /* Will be updated via JS for mouse position */
-}
-
 #cursor-circle.hover {
-  transform: translate(-50%, -50%) scale(3);
   background-color: rgba(200, 168, 75, 0.1);
-  border-width: 0.5px;
 }
 
-#cursor-dot {
-  width: 8px;
-  height: 8px;
-  background-color: var(--gold);
-}
-
-/* Smooth Scroll Container */
 .smooth-scroll-container {
   position: fixed;
   top: 0;
@@ -98,16 +78,13 @@ a, button, input, textarea {
 
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 1.2s ease-out;
 }
 
 .reveal-on-scroll.is-revealed {
   opacity: 1;
-  transform: translateY(0);
 }
 
-/* Ticker Animation */
 @keyframes ticker {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -116,14 +93,5 @@ a, button, input, textarea {
 .ticker-track {
   display: flex;
   width: max-content;
-  animation: ticker 15s linear infinite;
+  animation: ticker 25s linear infinite;
 }
-
-.perspective-container {
-  perspective: 1000px;
-}
-
-.preserve-3d {
-  transform-style: preserve-3d;
-}
-
