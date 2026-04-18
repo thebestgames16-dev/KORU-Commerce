@@ -35,56 +35,17 @@ html, body {
   font-family: "DM Sans", sans-serif;
   overflow-x: hidden;
   height: auto;
-  cursor: none; 
+  cursor: auto; 
 }
 
-/* Custom Cursor */
-.custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--gold);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  scrollbar-width: none;
+  -webkit-font-smoothing: antialiased;
 }
 
-.custom-cursor::after {
-  content: '';
-  width: 4px;
-  height: 4px;
-  background-color: var(--text-primary);
-  border-radius: 50%;
-  transition: opacity 0.3s;
-}
-
-.custom-cursor.hovering {
-  width: 48px;
-  height: 48px;
-  background-color: rgba(200, 168, 75, 0.05);
-}
-
-.custom-cursor.hovering::after {
-  opacity: 0;
-}
-
-@media (max-width: 768px) {
-  .custom-cursor {
-    display: none;
-  }
-  html, body {
-    cursor: auto;
-  }
-}
-
-/* Smooth Scroll */
 .smooth-scroll-container {
   position: fixed;
   top: 0;
@@ -98,25 +59,13 @@ html, body {
   will-change: transform;
 }
 
-/* Typography styles */
-.font-bebas {
-  font-family: var(--font-bebas);
-}
-.font-cormorant {
-  font-family: var(--font-cormorant);
-}
-.font-dm-sans {
-  font-family: var(--font-dm-sans);
-}
-.font-dm-mono {
-  font-family: var(--font-dm-mono);
+.reveal-on-scroll {
+  opacity: 0;
+  transition: opacity 1.2s ease-out;
 }
 
-/* Ticket Track */
-.ticker-track {
-  display: flex;
-  width: max-content;
-  animation: ticker 40s linear infinite;
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
 }
 
 @keyframes ticker {
@@ -124,14 +73,8 @@ html, body {
   100% { transform: translateX(-50%); }
 }
 
-/* Reveal Animations */
-.reveal-on-scroll {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal-on-scroll.is-revealed {
-  opacity: 1;
-  transform: translateY(0);
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 25s linear infinite;
 }
