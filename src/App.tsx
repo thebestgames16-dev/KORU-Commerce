@@ -171,7 +171,7 @@ export default function App() {
               <div className="flex-1 w-full relative reveal-on-scroll">
                 <div className="absolute inset-0 translate-x-4 translate-y-4 border border-[#C8A84B] z-0"></div>
                 <div className="relative z-10 w-full aspect-[4/5] bg-[#1a1a1a] overflow-hidden grayscale hover:grayscale-0 transition duration-700 pointer-events-auto group">
-                   <img src="/IMG_6198.webp" alt="Agency Office" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity transform group-hover:scale-105 duration-700" referrerPolicy="no-referrer" />
+                   <img src="https://raw.githubusercontent.com/thebestgames16-dev/KORU-Commerce/main/IMG_6198.webp" alt="Agency Office" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity transform group-hover:scale-105 duration-700" referrerPolicy="no-referrer" />
                    <div className="absolute bottom-6 left-6 right-6 p-6 bg-[#060606]/90 backdrop-blur border-l-4 border-[#C8A84B]">
                      <h4 className="font-bebas text-3xl mb-1 text-white">Abdulazeez Ali</h4>
                      <p className="font-dm-mono text-sm text-[#C8A84B] uppercase tracking-wider">Inhaber & Gründer</p>
