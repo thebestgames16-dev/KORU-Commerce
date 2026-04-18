@@ -4,55 +4,12 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   
+  const isMobile = typeof window !== 'undefined' ? (window.matchMedia('(max-width: 768px)').matches || 'ontouchstart' in window) : false;
+
   useEffect(() => {
-    const container = containerRef.current;
-    const content = contentRef.current;
-    if (!container || !content) return;
-
-    const isMobile = window.matchMedia('(max-width: 768px)').matches || 'ontouchstart' in window;
-    const lerpFactor = isMobile ? 0.8 : 0.08;
-
-    let currentY = 0;
-    let targetY = window.scrollY;
     let animationFrameId: number;
     let resizeObserver: ResizeObserver;
 
-    const updateHeight = () => {
-      if (content && container) {
-        document.body.style.height = `${content.getBoundingClientRect().height}px`;
-      }
-    };
-
-    const handleScroll = () => {
-      targetY = window.scrollY;
-    };
-
-    const animate = () => {
-      currentY += (targetY - currentY) * lerpFactor;
-      
-      if (Math.abs(targetY - currentY) < 0.01) {
-        currentY = targetY;
-      }
-      
-      if (content) {
-        content.style.transform = `translate3d(0, -${currentY}px, 0)`;
-      }
-      
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", updateHeight);
-    
-    // Use ResizeObserver for dynamic content changes
-    resizeObserver = new ResizeObserver(updateHeight);
-    resizeObserver.observe(content);
-    
-    updateHeight();
-    animate();
-
-    // Intersection observer for reveal animations
-    const revealElements = document.querySelectorAll('.reveal-on-scroll');
     const intersectionObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry, index) => {
         if (entry.isIntersecting) {
@@ -68,21 +25,71 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       threshold: 0.1
     });
 
-    // We do a small timeout to let children mount before observing
     setTimeout(() => {
       const elements = document.querySelectorAll('.reveal-on-scroll');
       elements.forEach(el => intersectionObserver.observe(el));
     }, 500);
 
+    if (isMobile) {
+      document.body.style.height = 'auto'; // Force normal height on mobile
+      return () => {
+        intersectionObserver.disconnect();
+      };
+    }
+
+    const container = containerRef.current;
+    const content = contentRef.current;
+    if (!container || !content) return;
+
+    let currentY = 0;
+    let targetY = window.scrollY;
+
+    const updateHeight = () => {
+      if (content && container) {
+        document.body.style.height = `${content.getBoundingClientRect().height}px`;
+      }
+    };
+
+    const handleScroll = () => {
+      targetY = window.scrollY;
+    };
+
+    const animate = () => {
+      currentY += (targetY - currentY) * 0.08;
+      
+      if (Math.abs(targetY - currentY) < 0.01) {
+        currentY = targetY;
+      }
+      
+      if (content) {
+        content.style.transform = `translate3d(0, -${currentY}px, 0)`;
+      }
+      
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", updateHeight);
+    
+    resizeObserver = new ResizeObserver(updateHeight);
+    resizeObserver.observe(content);
+    
+    setTimeout(updateHeight, 100);
+    animate();
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", updateHeight);
       cancelAnimationFrame(animationFrameId);
-      resizeObserver.disconnect();
+      if (resizeObserver) resizeObserver.disconnect();
       intersectionObserver.disconnect();
       document.body.style.height = ''; 
     };
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) {
+    return <div className="w-full relative overflow-x-hidden">{children}</div>;
+  }
 
   return (
     <div className="smooth-scroll-container" ref={containerRef}>
