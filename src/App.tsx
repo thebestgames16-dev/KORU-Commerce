@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import Cursor from './components/Cursor';
 import SmoothScroll from './components/SmoothScroll';
 import HeroCanvas from './components/HeroCanvas';
 import ServiceCard from './components/ServiceCard';
@@ -308,7 +307,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <Cursor />
 
       {/* Mobile Menu Overlay - ROOT LEVEL OUTSIDE SMOOTH SCROLL */}
       <div className={`fixed inset-0 bg-[#FFFFFF] z-[9999] flex flex-col items-center justify-center transition-all duration-500 origin-top ${mobileMenuOpen ? 'opacity-100 scale-y-100 pointer-events-auto' : 'opacity-0 scale-y-0 pointer-events-none'}`}>
