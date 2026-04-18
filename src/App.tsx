@@ -212,8 +212,8 @@ function Home() {
       </section>
 
       <section id="kontakt" className="py-40 relative bg-[#FAFAF8]">
-        <div className="container mx-auto px-6 max-w-5xl relative z-10 pointer-events-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
+        <div className="container mx-auto px-6 max-w-6xl relative z-10 pointer-events-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             <div className="reveal-on-scroll">
               <h2 className="font-bebas text-7xl md:text-8xl tracking-widest mb-10 text-[#111111] uppercase">
                 Bereit <br/><span className="text-[#C8A84B]">durchzustarten?</span>
@@ -222,26 +222,26 @@ function Home() {
                 Lass uns dein nächstes Projekt besprechen. Ob komplettes Re-Design, SEO-Strategie oder Conversion-Optimierung.
               </p>
               
-              <a href="#" className="inline-flex items-center gap-4 px-8 py-4 bg-[#C8A84B] text-white font-dm-sans font-medium hover:-translate-y-1 transition-transform duration-300">
+              <a href="#" className="inline-flex items-center gap-4 px-8 py-4 bg-[#C8A84B] text-[#111111] font-dm-sans font-medium hover:-translate-y-1 transition-transform duration-300">
                 <MessageSquare size={20} /> Via WhatsApp chatten
               </a>
             </div>
             
-            <div className="p-0 md:pl-12 reveal-on-scroll" style={{ transitionDelay: '200ms' }}>
+            <div className="bg-[#FFFFFF] p-10 md:p-14 border border-[#EBEBEB] reveal-on-scroll w-full" style={{ transitionDelay: '200ms' }}>
               <form className="flex flex-col gap-10">
                  <div className="flex flex-col gap-3">
                    <label className="font-dm-mono text-xs uppercase tracking-[0.2em] text-[#888888]">Name</label>
-                   <input type="text" className="bg-transparent border-b border-[#EBEBEB] py-3 text-[#111111] focus:outline-none focus:border-[#C8A84B] transition-colors font-dm-sans placeholder-[#EBEBEB]" placeholder="Max Mustermann" />
+                   <input type="text" className="bg-transparent border-b border-[#C8A84B] py-3 text-[#111111] focus:outline-none focus:border-[#111111] transition-colors font-dm-sans placeholder-[#EBEBEB]" placeholder="Max Mustermann" />
                  </div>
                  <div className="flex flex-col gap-3">
                    <label className="font-dm-mono text-xs uppercase tracking-[0.2em] text-[#888888]">E-Mail</label>
-                   <input type="email" className="bg-transparent border-b border-[#EBEBEB] py-3 text-[#111111] focus:outline-none focus:border-[#C8A84B] transition-colors font-dm-sans placeholder-[#EBEBEB]" placeholder="max@firma.de" />
+                   <input type="email" className="bg-transparent border-b border-[#C8A84B] py-3 text-[#111111] focus:outline-none focus:border-[#111111] transition-colors font-dm-sans placeholder-[#EBEBEB]" placeholder="max@firma.de" />
                  </div>
                  <div className="flex flex-col gap-3">
                    <label className="font-dm-mono text-xs uppercase tracking-[0.2em] text-[#888888]">Nachricht</label>
-                   <textarea rows={3} className="bg-transparent border-b border-[#EBEBEB] py-3 text-[#111111] focus:outline-none focus:border-[#C8A84B] transition-colors font-dm-sans resize-none placeholder-[#EBEBEB]" placeholder="Hi KORU Team, wir brauchen..."></textarea>
+                   <textarea rows={4} className="bg-transparent border-b border-[#C8A84B] py-3 text-[#111111] focus:outline-none focus:border-[#111111] transition-colors font-dm-sans resize-none placeholder-[#EBEBEB]" placeholder="Hi KORU Team, wir brauchen..."></textarea>
                  </div>
-                 <button type="button" className="mt-6 px-10 py-5 border border-[#C8A84B] text-[#111111] font-dm-sans text-sm font-medium uppercase tracking-[0.15em] hover:bg-[#C8A84B] hover:text-white transition-all duration-300 self-start">
+                 <button type="button" className="mt-4 px-10 py-5 bg-[#C8A84B] text-[#111111] font-dm-sans text-sm font-medium uppercase tracking-[0.15em] hover:bg-[#111111] hover:text-[#FFFFFF] transition-all duration-300 w-full text-center">
                    Anfrage Senden
                  </button>
               </form>
