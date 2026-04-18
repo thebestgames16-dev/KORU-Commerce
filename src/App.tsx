@@ -34,6 +34,31 @@ interface HomeProps {
 
 function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFormStatus('submitting');
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    try {
+      const response = await fetch('https://formspree.io/f/mjgjrgpw', {
+        method: 'POST',
+        body: data,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      if (response.ok) {
+        setFormStatus('success');
+        form.reset();
+      } else {
+        setFormStatus('error');
+      }
+    } catch (error) {
+      setFormStatus('error');
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -134,7 +159,7 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
             <div className="flex-1 w-full relative reveal-on-scroll">
               <div className="absolute inset-0 translate-x-6 translate-y-6 border border-[#C8A84B] z-0"></div>
               <div className="relative z-10 w-full aspect-[4/5] bg-white overflow-hidden pointer-events-auto">
-                 <img src="https://raw.githubusercontent.com/thebestgames16-dev/KORU-Commerce/main/IMG_6198.webp" alt="Abdulazeez Ali" className="w-full h-full object-cover transition-transform hover:scale-105 duration-1000" />
+                 <img src="/IMG_6198.webp" alt="Abdulazeez Ali" className="w-full h-full object-cover transition-transform hover:scale-105 duration-1000" />
                  <div className="absolute bottom-6 left-6 right-6 p-6 bg-white/90 backdrop-blur-md border border-[#EBEBEB]">
                    <h4 className="font-bebas tracking-widest text-3xl mb-1 text-[#111111]">Abdulazeez Ali</h4>
                    <p className="font-dm-mono text-xs text-[#C8A84B] uppercase tracking-widest">Inhaber & Gründer</p>
@@ -235,22 +260,37 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
             </div>
             
             <div className="bg-[#FFFFFF] p-10 md:p-14 border border-[#EBEBEB] reveal-on-scroll w-full" style={{ transitionDelay: '200ms' }}>
-              <form className="flex flex-col gap-10">
-                 <div className="flex flex-col gap-3">
-                   <label className="font-dm-mono text-xs uppercase tracking-[0.2em] text-[#888888]">Name</label>
-                   <input type="text" className="bg-transparent border-b border-[#C8A84B] py-3 text-[#111111] focus:outline-none focus:border-[#111111] transition-colors font-dm-sans placeholder-[#EBEBEB]" placeholder="Max Mustermann" />
-                 </div>
-                 <div className="flex flex-col gap-3">
-                   <label className="font-dm-mono text-xs uppercase tracking-[0.2em] text-[#888888]">E-Mail</label>
-                   <input type="email" className="bg-transparent border-b border-[#C8A84B] py-3 text-[#111111] focus:outline-none focus:border-[#111111] transition-colors font-dm-sans placeholder-[#EBEBEB]" placeholder="max@firma.de" />
-                 </div>
-                 <div className="flex flex-col gap-3">
-                   <label className="font-dm-mono text-xs uppercase tracking-[0.2em] text-[#888888]">Nachricht</label>
-                   <textarea rows={4} className="bg-transparent border-b border-[#C8A84B] py-3 text-[#111111] focus:outline-none focus:border-[#111111] transition-colors font-dm-sans resize-none placeholder-[#EBEBEB]" placeholder="Hi KORU Team, wir brauchen..."></textarea>
-                 </div>
-                 <button type="button" className="mt-4 px-10 py-5 bg-[#C8A84B] text-[#111111] font-dm-sans text-sm font-medium uppercase tracking-[0.15em] hover:bg-[#111111] hover:text-[#FFFFFF] transition-all duration-300 w-full text-center">
-                   Anfrage Senden
-                 </button>
+              <form onSubmit={handleFormSubmit} action="https://formspree.io/f/mjgjrgpw" method="POST" className="flex flex-col gap-10">
+                {formStatus === 'success' ? (
+                  <div className="flex flex-col items-center justify-center py-10 text-center">
+                    <div className="w-16 h-16 bg-[#C8A84B] rounded-full flex items-center justify-center mb-6">
+                      <Check className="text-[#FFFFFF]" size={32} />
+                    </div>
+                    <h3 className="font-bebas text-4xl text-[#111111] tracking-widest mb-2">Danke!</h3>
+                    <p className="font-dm-sans text-[#888888]">Wir melden uns in 24h bei dir.</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex flex-col gap-3">
+                      <label className="font-dm-mono text-xs uppercase tracking-[0.2em] text-[#888888]">Name</label>
+                      <input type="text" name="name" required className="bg-transparent border-b border-[#C8A84B] py-3 text-[#111111] focus:outline-none focus:border-[#111111] transition-colors font-dm-sans placeholder-[#EBEBEB]" placeholder="Max Mustermann" />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <label className="font-dm-mono text-xs uppercase tracking-[0.2em] text-[#888888]">E-Mail</label>
+                      <input type="email" name="email" required className="bg-transparent border-b border-[#C8A84B] py-3 text-[#111111] focus:outline-none focus:border-[#111111] transition-colors font-dm-sans placeholder-[#EBEBEB]" placeholder="max@firma.de" />
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <label className="font-dm-mono text-xs uppercase tracking-[0.2em] text-[#888888]">Nachricht</label>
+                      <textarea rows={4} name="message" required className="bg-transparent border-b border-[#C8A84B] py-3 text-[#111111] focus:outline-none focus:border-[#111111] transition-colors font-dm-sans resize-none placeholder-[#EBEBEB]" placeholder="Hi KORU Team, wir brauchen..."></textarea>
+                    </div>
+                    <button type="submit" disabled={formStatus === 'submitting'} className="mt-4 px-10 py-5 bg-[#C8A84B] text-[#111111] font-dm-sans text-sm font-medium uppercase tracking-[0.15em] hover:bg-[#111111] hover:text-[#FFFFFF] transition-all duration-300 w-full text-center disabled:opacity-50">
+                      {formStatus === 'submitting' ? 'Wird gesendet...' : 'Anfrage Senden'}
+                    </button>
+                    {formStatus === 'error' && (
+                      <p className="text-red-500 font-dm-sans text-xs text-center mt-2">Ein Fehler ist aufgetreten. Bitte versuche es noch einmal.</p>
+                    )}
+                  </>
+                )}
               </form>
             </div>
           </div>
