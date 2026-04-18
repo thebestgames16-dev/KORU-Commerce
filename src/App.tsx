@@ -11,10 +11,19 @@ import Datenschutz from './pages/Datenschutz';
 import { MonitorSmartphone, Search, PenTool, LayoutTemplate, Share2, Rocket, ArrowRight, Menu, X, Check, MessageSquare } from 'lucide-react';
 
 const ScrollToTop = () => {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    if (hash) {
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
   return null;
 };
 
@@ -125,7 +134,7 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
             <div className="flex-1 w-full relative reveal-on-scroll">
               <div className="absolute inset-0 translate-x-6 translate-y-6 border border-[#C8A84B] z-0"></div>
               <div className="relative z-10 w-full aspect-[4/5] bg-white overflow-hidden pointer-events-auto">
-                 <img src="https://raw.githubusercontent.com/thebestgames16-dev/KORU-Commerce/main/IMG_6198.webp" alt="Abdulazeez Ali" className="w-full h-full object-cover transition-transform hover:scale-105 duration-1000" />
+                 <img src="/IMG_6198.webp" alt="Abdulazeez Ali" className="w-full h-full object-cover transition-transform hover:scale-105 duration-1000" />
                  <div className="absolute bottom-6 left-6 right-6 p-6 bg-white/90 backdrop-blur-md border border-[#EBEBEB]">
                    <h4 className="font-bebas tracking-widest text-3xl mb-1 text-[#111111]">Abdulazeez Ali</h4>
                    <p className="font-dm-mono text-xs text-[#C8A84B] uppercase tracking-widest">Inhaber & Gründer</p>
