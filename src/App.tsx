@@ -1,17 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'motion/react';
+import { motion, useScroll, useTransform, useSpring, useMotionValue, AnimatePresence } from 'motion/react';
 import SmoothScroll from './components/SmoothScroll';
 import HeroCanvas from './components/HeroCanvas';
 import ServiceCard from './components/ServiceCard';
 import AnimatedCounter from './components/AnimatedCounter';
 import Footer, { LogoSvg } from './components/Footer';
 import ScrollProgress from './components/ScrollProgress';
+import Cursor from './components/Cursor';
 import Impressum from './pages/Impressum';
 import Datenschutz from './pages/Datenschutz';
 import {
   MonitorSmartphone, Search, PenTool, LayoutTemplate, Share2, Rocket,
-  ArrowRight, Menu, X, Check, MessageSquare, ArrowUpRight, ExternalLink
+  ArrowRight, Menu, X, Check, MessageSquare, ExternalLink
 } from 'lucide-react';
 
 const ScrollToTop = () => {
@@ -29,7 +30,6 @@ const ScrollToTop = () => {
   return null;
 };
 
-// Reusable reveal wrapper
 function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (
     <motion.div
@@ -44,7 +44,6 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
   );
 }
 
-// Clip-path heading reveal
 function HeadingReveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
   return (
     <div className="overflow-hidden">
@@ -61,7 +60,6 @@ function HeadingReveal({ children, delay = 0, className = "" }: { children: Reac
   );
 }
 
-// Split text word by word
 function SplitWords({ text, className = "", baseDelay = 0 }: { text: string; className?: string; baseDelay?: number }) {
   const words = text.split(" ");
   return (
@@ -80,6 +78,33 @@ function SplitWords({ text, className = "", baseDelay = 0 }: { text: string; cla
         </span>
       ))}
     </span>
+  );
+}
+
+function MagneticWrap({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const sx = useSpring(x, { stiffness: 300, damping: 25 });
+  const sy = useSpring(y, { stiffness: 300, damping: 25 });
+
+  const onMove = (e: React.MouseEvent) => {
+    if (!ref.current) return;
+    const r = ref.current.getBoundingClientRect();
+    x.set((e.clientX - r.left - r.width / 2) * 0.4);
+    y.set((e.clientY - r.top - r.height / 2) * 0.4);
+  };
+  const onLeave = () => { x.set(0); y.set(0); };
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ x: sx, y: sy, display: "inline-block" }}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+    >
+      {children}
+    </motion.div>
   );
 }
 
@@ -116,13 +141,24 @@ const processSteps = [
   { num: "04", title: "Launch & Wachstum", text: "Nach dem Launch sind wir weiter für dich da — mit SEO, Analytics und kontinuierlicher Optimierung." },
 ];
 
+const testimonials = [
+  { text: "KORU hat unsere Vision nicht nur umgesetzt, sondern auf ein Level gehoben, das wir uns nicht vorstellen konnten. Die Conversion-Rate ist um 45% gestiegen.", name: "Markus D.", role: "CEO, TechFlow GmbH" },
+  { text: "Die Kombination aus technischer Perfektion und diesem unglaublich guten, cleanen Design ist in der Region Stuttgart einzigartig.", name: "Sarah W.", role: "Gründerin, Maison Studio" },
+  { text: "Endlich eine Agentur, die nicht nur schöne Bilder malt, sondern echten messbaren Umsatz bringt. Die Kommunikation war immer on point.", name: "Jonas K.", role: "Inhaber, KFZ-Leitner" },
+];
+
 function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
   const [scrolled, setScrolled] = useState(false);
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const heroRef = useRef<HTMLElement>(null);
+  const manifestoRef = useRef<HTMLElement>(null);
+
   const { scrollYProgress: heroScroll } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const { scrollYProgress: manifestoProgress } = useScroll({ target: manifestoRef, offset: ["start end", "end start"] });
+
   const heroY = useTransform(heroScroll, [0, 1], ["0%", "20%"]);
   const heroOpacity = useTransform(heroScroll, [0, 0.6], [1, 0]);
+  const manifestoY = useTransform(manifestoProgress, [0, 1], ["6%", "-6%"]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -168,14 +204,16 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
             ))}
           </div>
           <div className="hidden md:block pointer-events-auto">
-            <motion.a
-              href="#kontakt"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              className="px-6 py-3 border border-[#C8A84B] text-[#111111] font-dm-sans text-xs uppercase tracking-widest hover:bg-[#C8A84B] hover:text-white transition-all duration-300 cursor-pointer"
-            >
-              Projekt starten
-            </motion.a>
+            <MagneticWrap>
+              <motion.a
+                href="#kontakt"
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
+                className="px-6 py-3 border border-[#C8A84B] text-[#111111] font-dm-sans text-xs uppercase tracking-widest hover:bg-[#C8A84B] hover:text-white transition-all duration-300 cursor-pointer inline-block"
+              >
+                Projekt starten
+              </motion.a>
+            </MagneticWrap>
           </div>
           <button
             className="md:hidden relative z-[1000] text-[#111111] pointer-events-auto touch-manipulation"
@@ -192,6 +230,9 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
         <motion.div style={{ y: heroY }} className="absolute inset-0 z-0">
           <HeroCanvas />
         </motion.div>
+
+        {/* Grain texture overlay */}
+        <div className="hero-grain absolute inset-0 z-[1] pointer-events-none" />
 
         <motion.div
           style={{ opacity: heroOpacity }}
@@ -249,21 +290,22 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
             transition={{ duration: 0.8, delay: 1.2 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-6 pointer-events-auto"
           >
-            <motion.a
-              href="#kontakt"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.97 }}
-              className="px-10 py-5 border border-[#C8A84B] text-[#111111] font-dm-sans text-sm font-medium uppercase tracking-[0.15em] hover:bg-[#C8A84B] hover:text-white transition-all duration-300 w-full sm:w-auto text-center flex items-center justify-center gap-3 cursor-pointer"
-            >
-              Projekt starten <ArrowRight size={18} />
-            </motion.a>
+            <MagneticWrap>
+              <motion.a
+                href="#kontakt"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.97 }}
+                className="px-10 py-5 border border-[#C8A84B] text-[#111111] font-dm-sans text-sm font-medium uppercase tracking-[0.15em] hover:bg-[#C8A84B] hover:text-white transition-all duration-300 sm:w-auto text-center flex items-center justify-center gap-3 cursor-pointer"
+              >
+                Projekt starten <ArrowRight size={18} />
+              </motion.a>
+            </MagneticWrap>
             <a href="#projekte" className="px-10 py-5 text-[#888888] font-dm-sans text-sm font-medium uppercase tracking-[0.15em] hover:text-[#111111] transition-all duration-300 w-full sm:w-auto text-center cursor-pointer">
               Unsere Arbeit ↓
             </a>
           </motion.div>
         </motion.div>
 
-        {/* Scroll hint */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -293,6 +335,69 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
           ))}
         </div>
       </div>
+
+      {/* ── MANIFESTO ── */}
+      <section ref={manifestoRef} className="py-48 bg-[#111111] relative overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 0.035 }}
+          viewport={{ once: true }}
+          transition={{ duration: 2.5 }}
+          className="absolute -top-10 -left-8 font-bebas leading-none text-white select-none pointer-events-none whitespace-nowrap"
+          style={{ fontSize: "28vw" }}
+        >
+          KORU
+        </motion.div>
+        <div className="container mx-auto max-w-7xl px-6 relative z-10">
+          <motion.div style={{ y: manifestoY }}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="flex items-center gap-4 mb-12"
+            >
+              <motion.div
+                initial={{ scaleX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="h-px w-10 bg-[#C8A84B] origin-left"
+              />
+              <span className="font-dm-mono text-xs text-[#C8A84B] uppercase tracking-[0.4em]">Unser Anspruch</span>
+            </motion.div>
+
+            <div className="mb-3">
+              <SplitWords
+                text="Nicht die günstigste"
+                className="font-bebas text-[clamp(2.8rem,7vw,7rem)] text-white tracking-widest leading-[0.9]"
+                baseDelay={0.1}
+              />
+            </div>
+            <div className="mb-3">
+              <SplitWords
+                text="Agentur. Die beste."
+                className="font-bebas text-[clamp(2.8rem,7vw,7rem)] text-[#C8A84B] tracking-widest leading-[0.9]"
+                baseDelay={0.35}
+              />
+            </div>
+
+            <motion.div
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="h-px w-24 bg-[#C8A84B] mt-12 mb-12 origin-left"
+            />
+
+            <Reveal delay={0.6}>
+              <p className="font-cormorant italic text-2xl md:text-3xl text-[#888888] max-w-2xl leading-relaxed">
+                Wir arbeiten mit wenigen Kunden — und geben jedem Projekt unsere volle Aufmerksamkeit, unsere besten Ideen und unsere höchsten Ansprüche.
+              </p>
+            </Reveal>
+          </motion.div>
+        </div>
+      </section>
 
       {/* ── LEISTUNGEN ── */}
       <section id="leistungen" className="py-40 px-6 max-w-7xl mx-auto bg-[#FFFFFF]">
@@ -415,7 +520,6 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
                     )}
                   </div>
                 </div>
-                {/* Animated gold bar */}
                 <motion.div
                   className="absolute bottom-0 left-0 h-[3px] bg-[#C8A84B] origin-left"
                   initial={{ scaleX: 0 }}
@@ -512,34 +616,32 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
       </section>
 
       {/* ── TESTIMONIALS ── */}
-      <section className="py-40 px-6 max-w-7xl mx-auto bg-[#FFFFFF]">
-        <div className="mb-24 text-center">
+      <section className="py-40 bg-[#FFFFFF] overflow-hidden">
+        <div className="mb-20 text-center px-6">
           <HeadingReveal className="font-bebas text-6xl md:text-8xl tracking-widest text-[#111111] uppercase">
             Was Kunden <span className="text-[#C8A84B]">sagen</span>
           </HeadingReveal>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {[
-            { text: "KORU hat unsere Vision nicht nur umgesetzt, sondern auf ein Level gehoben, das wir uns nicht vorstellen konnten. Die Conversion-Rate ist um 45% gestiegen.", name: "Markus D.", role: "CEO, TechFlow GmbH" },
-            { text: "Die Kombination aus technischer Perfektion und diesem unglaublich guten, cleanen Design ist in der Region Stuttgart einzigartig.", name: "Sarah W.", role: "Gründerin, Maison Studio" },
-            { text: "Endlich eine Agentur, die nicht nur schöne Bilder malt, sondern echten messbaren Umsatz bringt. Die Kommunikation war immer on point.", name: "Jonas K.", role: "Inhaber, KFZ-Leitner" },
-          ].map((testi, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 60 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.7, delay: idx * 0.15, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -6 }}
-              className="relative pt-12 p-10 border border-[#EBEBEB] hover:border-[#C8A84B] transition-colors duration-500 group"
-            >
-              <div className="absolute top-0 left-8 text-[#EBEBEB] group-hover:text-[#C8A84B]/20 font-serif text-[120px] leading-none select-none transition-colors duration-500">"</div>
-              <p className="font-cormorant text-2xl text-[#111111] mb-10 italic relative z-10">"{testi.text}"</p>
-              <div className="border-t border-[#C8A84B] pt-6 w-12 mb-4" />
-              <h5 className="font-dm-sans font-medium text-[#111111] text-sm tracking-widest mb-1">{testi.name}</h5>
-              <p className="font-dm-mono text-xs text-[#888888] tracking-widest">{testi.role}</p>
-            </motion.div>
-          ))}
+
+        <div className="relative">
+          {/* Fade edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+          <div className="testimonial-track">
+            {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testi, idx) => (
+              <div
+                key={idx}
+                className="w-[460px] shrink-0 relative pt-12 p-10 border border-[#EBEBEB] hover:border-[#C8A84B] transition-colors duration-500 group mx-4"
+              >
+                <div className="absolute top-0 left-8 text-[#EBEBEB] group-hover:text-[#C8A84B]/20 font-serif text-[120px] leading-none select-none transition-colors duration-500">"</div>
+                <p className="font-cormorant text-xl text-[#111111] mb-10 italic relative z-10">"{testi.text}"</p>
+                <div className="border-t border-[#C8A84B] pt-6 w-12 mb-4" />
+                <h5 className="font-dm-sans font-medium text-[#111111] text-sm tracking-widest mb-1">{testi.name}</h5>
+                <p className="font-dm-mono text-xs text-[#888888] tracking-widest">{testi.role}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -555,16 +657,18 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
                 <p className="font-dm-sans text-[#888888] font-light text-xl mb-12 leading-relaxed max-w-md">
                   Lass uns dein nächstes Projekt besprechen. Ob komplettes Re-Design, SEO-Strategie oder Conversion-Optimierung.
                 </p>
-                <motion.a
-                  href="https://wa.me/4915906227948?text=Hallo%20KORU%20Commerce%2C%20ich%20interessiere%20mich%20für%20eine%20Website."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.04, y: -3 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-4 px-8 py-4 bg-[#C8A84B] text-[#111111] font-dm-sans font-medium cursor-pointer"
-                >
-                  <MessageSquare size={20} /> Via WhatsApp chatten
-                </motion.a>
+                <MagneticWrap>
+                  <motion.a
+                    href="https://wa.me/4915906227948?text=Hallo%20KORU%20Commerce%2C%20ich%20interessiere%20mich%20für%20eine%20Website."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.04, y: -3 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-4 px-8 py-4 bg-[#C8A84B] text-[#111111] font-dm-sans font-medium cursor-pointer"
+                  >
+                    <MessageSquare size={20} /> Via WhatsApp chatten
+                  </motion.a>
+                </MagneticWrap>
               </Reveal>
             </div>
 
@@ -650,8 +754,8 @@ export default function App() {
     <BrowserRouter>
       <ScrollToTop />
       <ScrollProgress />
+      <Cursor />
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div

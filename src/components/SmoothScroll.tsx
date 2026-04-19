@@ -55,7 +55,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     };
 
     const animate = () => {
-      currentY += (targetY - currentY) * 0.08;
+      currentY += (targetY - currentY) * 0.10;
       
       if (Math.abs(targetY - currentY) < 0.01) {
         currentY = targetY;

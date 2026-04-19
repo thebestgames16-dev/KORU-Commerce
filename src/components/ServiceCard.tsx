@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "motion/react";
+import React, { useRef } from "react";
+import { motion, useMotionValue, useSpring } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 
 interface ServiceCardProps {
@@ -10,13 +10,40 @@ interface ServiceCardProps {
 }
 
 export default function ServiceCard({ title, description, icon, index }: ServiceCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const rotateX = useMotionValue(0);
+  const rotateY = useMotionValue(0);
+  const springX = useSpring(rotateX, { stiffness: 150, damping: 20 });
+  const springY = useSpring(rotateY, { stiffness: 150, damping: 20 });
+
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const dx = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+    const dy = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+    rotateY.set(dx * 7);
+    rotateX.set(-dy * 7);
+  };
+
+  const onMouseLeave = () => {
+    rotateX.set(0);
+    rotateY.set(0);
+  };
+
   return (
     <motion.div
+      ref={cardRef}
+      style={{
+        rotateX: springX,
+        rotateY: springY,
+        transformPerspective: 900,
+      }}
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.7, delay: index * 0.1 }}
-      whileHover={{ y: -8 }}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
       className="group bg-[#FFFFFF] border border-[#EBEBEB] p-10 flex flex-col gap-6 cursor-pointer relative overflow-hidden transition-shadow duration-500 hover:shadow-2xl hover:shadow-black/5 hover:border-[#C8A84B] pointer-events-auto"
     >
       {/* Gold fill sweep on hover */}
