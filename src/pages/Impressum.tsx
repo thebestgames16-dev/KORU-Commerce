@@ -30,7 +30,7 @@ export default function Impressum() {
 
           <section>
             <h2 className="text-[#111111] font-bebas text-3xl mb-4 tracking-widest uppercase">Kontakt</h2>
-            <p>Telefon: 0159 0622 7948<br/>E-Mail: <a href="mailto:abdulazeez.ali04@outlook.de" className="text-[#C8A84B] hover:text-[#111111] transition-colors">abdulazeez.ali04@outlook.de</a></p>
+            <p>Telefon: 0159 0622 7948<br/>E-Mail: <a href="mailto:info@koru-commerce.com" className="text-[#C8A84B] hover:text-[#111111] transition-colors">info@koru-commerce.com</a></p>
           </section>
 
           <section>
