@@ -64,7 +64,7 @@ export default function ServiceCard({ title, description, icon, index }: Service
 
       <div className="relative z-10 flex-1">
         <h3 className="font-bebas text-3xl mb-3 text-[#111111] tracking-widest">{title}</h3>
-        <p className="font-dm-sans text-[#888888] group-hover:text-[#111111]/70 font-light leading-relaxed text-sm transition-colors duration-300">
+        <p className="font-dm-sans text-[#888888] group-hover:text-[#111111]/70 font-light leading-relaxed text-base transition-colors duration-300">
           {description}
         </p>
       </div>

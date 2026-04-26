@@ -5,7 +5,12 @@ export default function HeroCanvas() {
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!mountRef.current) return;
+    const container = mountRef.current;
+    if (!container) return;
+
+    // Remove any leftover canvas from a previous (Strict Mode) mount
+    container.querySelectorAll("canvas").forEach(c => c.remove());
+
     const w = window.innerWidth;
     const h = window.innerHeight;
 
@@ -18,7 +23,7 @@ export default function HeroCanvas() {
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(w, h);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    mountRef.current.appendChild(renderer.domElement);
+    container.appendChild(renderer.domElement);
 
     // ── TORUS KNOT wireframe ──
     const knotGeo = new THREE.TorusKnotGeometry(1.8, 0.45, 180, 20, 2, 3);
@@ -114,7 +119,7 @@ export default function HeroCanvas() {
       window.removeEventListener("mousemove", onMouse);
       window.removeEventListener("resize", onResize);
       cancelAnimationFrame(raf);
-      mountRef.current?.removeChild(renderer.domElement);
+      renderer.domElement.remove();
       knotGeo.dispose(); knotMat.dispose();
       icoGeo.dispose(); icoMat.dispose();
       pGeo.dispose(); pMat.dispose();

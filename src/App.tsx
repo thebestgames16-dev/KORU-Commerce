@@ -12,7 +12,7 @@ import Impressum from './pages/Impressum';
 import Datenschutz from './pages/Datenschutz';
 import {
   MonitorSmartphone, Search, PenTool, LayoutTemplate, Share2, Rocket,
-  ArrowRight, Menu, X, Check, MessageSquare, ExternalLink
+  ArrowRight, Menu, X, Check, MessageSquare
 } from 'lucide-react';
 
 const ScrollToTop = () => {
@@ -108,26 +108,6 @@ function MagneticWrap({ children }: { children: React.ReactNode }) {
   );
 }
 
-const projects = [
-  {
-    id: 1,
-    name: "Nuscha Nägel",
-    category: "Webdesign & Entwicklung",
-    description: "Luxuriöse Single-Page Website für ein Nagelstudio in Reutlingen — mit Parallax-Hero, Galerie-Lightbox und automatisierten Animationen.",
-    url: "https://nuscha-naegel.vercel.app",
-    tags: ["Next.js", "Framer Motion", "Tailwind CSS"],
-    color: "#F8E1E7",
-  },
-  {
-    id: 2,
-    name: "Projekt in Entwicklung",
-    category: "Webdesign & Strategie",
-    description: "Das nächste KORU-Projekt entsteht gerade. Premium Design, maximale Performance.",
-    url: null,
-    tags: ["Coming Soon"],
-    color: "#F5F2ED",
-  },
-];
 
 interface HomeProps {
   mobileMenuOpen: boolean;
@@ -141,24 +121,16 @@ const processSteps = [
   { num: "04", title: "Launch & Wachstum", text: "Nach dem Launch sind wir weiter für dich da — mit SEO, Analytics und kontinuierlicher Optimierung." },
 ];
 
-const testimonials = [
-  { text: "KORU hat unsere Vision nicht nur umgesetzt, sondern auf ein Level gehoben, das wir uns nicht vorstellen konnten. Die Conversion-Rate ist um 45% gestiegen.", name: "Markus D.", role: "CEO, TechFlow GmbH" },
-  { text: "Die Kombination aus technischer Perfektion und diesem unglaublich guten, cleanen Design ist in der Region Stuttgart einzigartig.", name: "Sarah W.", role: "Gründerin, Maison Studio" },
-  { text: "Endlich eine Agentur, die nicht nur schöne Bilder malt, sondern echten messbaren Umsatz bringt. Die Kommunikation war immer on point.", name: "Jonas K.", role: "Inhaber, KFZ-Leitner" },
-];
 
 function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
   const [scrolled, setScrolled] = useState(false);
   const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const heroRef = useRef<HTMLElement>(null);
-  const manifestoRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress: heroScroll } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const { scrollYProgress: manifestoProgress } = useScroll({ target: manifestoRef, offset: ["start end", "end start"] });
 
   const heroY = useTransform(heroScroll, [0, 1], ["0%", "20%"]);
   const heroOpacity = useTransform(heroScroll, [0, 0.6], [1, 0]);
-  const manifestoY = useTransform(manifestoProgress, [0, 1], ["6%", "-6%"]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -197,7 +169,7 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
             <span className="font-bebas text-2xl tracking-widest text-[#111111] hidden sm:block">KORU COMMERCE</span>
           </a>
           <div className="hidden md:flex items-center gap-10">
-            {["leistungen","projekte","ueber-uns","kontakt"].map(id => (
+            {["leistungen","ueber-uns","kontakt"].map(id => (
               <a key={id} href={`#${id}`} className="font-dm-sans text-sm font-medium tracking-widest uppercase text-[#111111] hover:text-[#C8A84B] transition-colors">
                 {id === "ueber-uns" ? "Über uns" : id.charAt(0).toUpperCase() + id.slice(1)}
               </a>
@@ -244,7 +216,7 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mb-6"
           >
-            <span className="text-[#888888] font-dm-mono text-sm tracking-[0.4em] uppercase">Web Design · Reutlingen</span>
+            <span className="text-[#888888] font-dm-mono text-sm tracking-[0.4em] uppercase">Web Design · Region Stuttgart</span>
           </motion.div>
 
           <h1 className="font-bebas text-7xl md:text-[120px] leading-[0.85] uppercase mb-10 tracking-[0.02em] text-[#111111]">
@@ -279,7 +251,7 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1.0 }}
-            className="font-cormorant italic text-2xl md:text-3xl text-[#888888] max-w-2xl mx-auto mb-16 leading-relaxed"
+            className="font-cormorant italic text-3xl md:text-4xl text-[#888888] max-w-2xl mx-auto mb-16 leading-relaxed"
           >
             KORU Commerce verwandelt deine Online-Präsenz in deinen stärksten Vertriebsmitarbeiter.
           </motion.p>
@@ -300,8 +272,8 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
                 Projekt starten <ArrowRight size={18} />
               </motion.a>
             </MagneticWrap>
-            <a href="#projekte" className="px-10 py-5 text-[#888888] font-dm-sans text-sm font-medium uppercase tracking-[0.15em] hover:text-[#111111] transition-all duration-300 w-full sm:w-auto text-center cursor-pointer">
-              Unsere Arbeit ↓
+            <a href="#leistungen" className="px-10 py-5 text-[#888888] font-dm-sans text-sm font-medium uppercase tracking-[0.15em] hover:text-[#111111] transition-all duration-300 w-full sm:w-auto text-center cursor-pointer">
+              Unsere Leistungen ↓
             </a>
           </motion.div>
         </motion.div>
@@ -336,66 +308,87 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
         </div>
       </div>
 
-      {/* ── MANIFESTO ── */}
-      <section ref={manifestoRef} className="py-48 bg-[#111111] relative overflow-hidden">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 0.035 }}
-          viewport={{ once: true }}
-          transition={{ duration: 2.5 }}
-          className="absolute -top-10 -left-8 font-bebas leading-none text-white select-none pointer-events-none whitespace-nowrap"
+      {/* ── ANSPRUCH ── */}
+      <section className="bg-[#111111] relative overflow-hidden">
+        {/* Watermark */}
+        <div
+          className="absolute -top-10 -left-8 font-bebas leading-none text-white/[0.03] select-none pointer-events-none whitespace-nowrap"
           style={{ fontSize: "28vw" }}
         >
           KORU
-        </motion.div>
-        <div className="container mx-auto max-w-7xl px-6 relative z-10">
-          <motion.div style={{ y: manifestoY }}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="flex items-center gap-4 mb-12"
-            >
-              <motion.div
-                initial={{ scaleX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="h-px w-10 bg-[#C8A84B] origin-left"
-              />
+        </div>
+
+        {/* Top block — headline */}
+        <div className="container mx-auto max-w-7xl px-6 pt-32 pb-20 relative z-10">
+          <Reveal className="mb-5">
+            <div className="flex items-center gap-4">
+              <div className="h-px w-10 bg-[#C8A84B]" />
               <span className="font-dm-mono text-xs text-[#C8A84B] uppercase tracking-[0.4em]">Unser Anspruch</span>
-            </motion.div>
-
-            <div className="mb-3">
-              <SplitWords
-                text="Nicht die günstigste"
-                className="font-bebas text-[clamp(2.8rem,7vw,7rem)] text-white tracking-widest leading-[0.9]"
-                baseDelay={0.1}
-              />
             </div>
-            <div className="mb-3">
-              <SplitWords
-                text="Agentur. Die beste."
-                className="font-bebas text-[clamp(2.8rem,7vw,7rem)] text-[#C8A84B] tracking-widest leading-[0.9]"
-                baseDelay={0.35}
-              />
-            </div>
+          </Reveal>
 
-            <motion.div
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="h-px w-24 bg-[#C8A84B] mt-12 mb-12 origin-left"
-            />
+          <div className="mt-10 mb-6">
+            <h2 className="font-bebas leading-[0.88] uppercase text-white" style={{ fontSize: "clamp(3.5rem, 9vw, 9rem)" }}>
+              Nicht die günstigste
+            </h2>
+            <h2 className="font-bebas leading-[0.88] uppercase text-[#C8A84B]" style={{ fontSize: "clamp(3.5rem, 9vw, 9rem)" }}>
+              Agentur. Die beste.
+            </h2>
+          </div>
 
-            <Reveal delay={0.6}>
-              <p className="font-cormorant italic text-2xl md:text-3xl text-[#888888] max-w-2xl leading-relaxed">
-                Wir arbeiten mit wenigen Kunden — und geben jedem Projekt unsere volle Aufmerksamkeit, unsere besten Ideen und unsere höchsten Ansprüche.
-              </p>
-            </Reveal>
-          </motion.div>
+          <Reveal delay={0.15}>
+            <p className="font-dm-mono text-sm text-[#555555] uppercase tracking-[0.3em]">
+              — Nr. 1 Webagentur in der Region Stuttgart —
+            </p>
+          </Reveal>
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-white/10" />
+
+        {/* Three pillars */}
+        <div className="container mx-auto max-w-7xl relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-3">
+            {[
+              {
+                num: "01",
+                title: "Kein Projekt wie das andere",
+                text: "Jede Website, die wir bauen, ist ein Unikat — maßgeschneidert für dein Business, deine Zielgruppe und deine Ziele. Templates gibt es woanders.",
+              },
+              {
+                num: "02",
+                title: "Performance, die zählt",
+                text: "Schönheit ohne Ergebnis ist Dekoration. Jede Entscheidung bei KORU ist auf messbaren Umsatz ausgerichtet — vom ersten Pixel bis zum letzten CTA.",
+              },
+              {
+                num: "03",
+                title: "Regional stark. Digital dominant.",
+                text: "Wir kennen den Markt der Region Stuttgart und wissen, was lokale Unternehmen brauchen, um online die Konkurrenz hinter sich zu lassen.",
+              },
+            ].map((pillar, i) => (
+              <div key={pillar.num}>
+                <Reveal delay={i * 0.15}>
+                  <div className={`p-10 md:p-14 ${i < 2 ? "border-b md:border-b-0 md:border-r border-white/10" : ""}`}>
+                    <span className="font-dm-mono text-[#C8A84B] text-5xl font-light block mb-8 leading-none">{pillar.num}</span>
+                    <h3 className="font-bebas text-2xl md:text-3xl tracking-widest text-white mb-5">{pillar.title}</h3>
+                    <p className="font-dm-sans text-[#666666] text-base leading-relaxed font-light">{pillar.text}</p>
+                  </div>
+                </Reveal>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-white/10" />
+
+        {/* Closing quote */}
+        <div className="container mx-auto max-w-7xl px-6 py-20 relative z-10">
+          <Reveal>
+            <blockquote className="font-cormorant italic text-3xl md:text-4xl text-[#555555] max-w-4xl leading-relaxed border-l-2 border-[#C8A84B] pl-8">
+              „Wir übernehmen kein Projekt, das wir nicht besser machen können als jede andere Agentur in der Region Stuttgart — das ist kein Versprechen, das ist unser Standard."
+            </blockquote>
+          </Reveal>
         </div>
       </section>
 
@@ -450,87 +443,13 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
                 />
                 <span className="font-dm-mono text-[#C8A84B] text-5xl font-light block mb-8 leading-none">{step.num}</span>
                 <h3 className="font-bebas text-2xl tracking-widest text-white mb-4">{step.title}</h3>
-                <p className="font-dm-sans text-[#888888] text-sm leading-relaxed font-light">{step.text}</p>
+                <p className="font-dm-sans text-[#888888] text-base leading-relaxed font-light">{step.text}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── PROJEKTE ── */}
-      <section id="projekte" className="py-40 bg-[#FFFFFF]">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-24">
-            <HeadingReveal className="font-bebas text-6xl md:text-8xl tracking-widest text-[#111111] uppercase">
-              Ausgewählte <br/><span className="text-[#C8A84B]">Arbeiten</span>
-            </HeadingReveal>
-            <Reveal delay={0.2}>
-              <p className="font-dm-mono text-xs text-[#888888] uppercase tracking-widest max-w-xs text-right">
-                Jedes Projekt ist ein Unikat — entwickelt für messbaren Erfolg.
-              </p>
-            </Reveal>
-          </div>
-
-          <div className="space-y-6">
-            {projects.map((project, i) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.8, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] }}
-                whileHover={{ x: 6 }}
-                className="group relative border border-[#EBEBEB] hover:border-[#C8A84B] transition-all duration-500 overflow-hidden cursor-pointer pointer-events-auto"
-                style={{ backgroundColor: project.color }}
-              >
-                <div className="flex flex-col md:flex-row items-start md:items-center justify-between p-10 md:p-14 gap-8">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-4 mb-4">
-                      <span className="font-dm-mono text-xs text-[#888888] uppercase tracking-widest">{project.category}</span>
-                      <span className="w-1 h-1 rounded-full bg-[#C8A84B]" />
-                      <span className="font-dm-mono text-xs text-[#C8A84B] uppercase tracking-widest">
-                        {String(project.id).padStart(2, "0")}
-                      </span>
-                    </div>
-                    <h3 className="font-bebas text-5xl md:text-6xl tracking-widest text-[#111111] mb-4">{project.name}</h3>
-                    <p className="font-dm-sans text-[#888888] text-sm leading-relaxed max-w-lg font-light">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mt-6">
-                      {project.tags.map(tag => (
-                        <span key={tag} className="font-dm-mono text-[10px] uppercase tracking-widest px-3 py-1 border border-[#111111]/10 text-[#888888]">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="flex-shrink-0">
-                    {project.url ? (
-                      <a
-                        href={project.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-3 px-8 py-4 border border-[#111111] text-[#111111] font-dm-sans text-xs uppercase tracking-widest hover:bg-[#111111] hover:text-white transition-all duration-300"
-                        onClick={e => e.stopPropagation()}
-                      >
-                        Live ansehen <ExternalLink size={14} />
-                      </a>
-                    ) : (
-                      <div className="flex items-center gap-3 px-8 py-4 border border-[#EBEBEB] text-[#888888] font-dm-sans text-xs uppercase tracking-widest">
-                        In Entwicklung
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <motion.div
-                  className="absolute bottom-0 left-0 h-[3px] bg-[#C8A84B] origin-left"
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.4 }}
-                />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── ÜBER UNS ── */}
       <section id="ueber-uns" className="py-40 bg-[#FAFAF8]">
@@ -563,7 +482,7 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
               </HeadingReveal>
 
               <Reveal delay={0.1}>
-                <p className="font-cormorant text-3xl font-light text-[#888888] leading-relaxed mb-12">
+                <p className="font-cormorant text-4xl font-light text-[#888888] leading-relaxed mb-12">
                   Wir sind nicht die typische Agentur von nebenan. KORU Commerce steht für kompromisslose Ästhetik und eiskalte Performance.
                 </p>
               </Reveal>
@@ -584,7 +503,7 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
                       className="flex items-center gap-6"
                     >
                       <div className="text-[#C8A84B]"><Check size={24} strokeWidth={1} /></div>
-                      <span className="font-dm-sans text-xl text-[#111111] font-light">{item}</span>
+                      <span className="font-dm-sans text-2xl text-[#111111] font-light">{item}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -595,10 +514,9 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.5 }}
-                className="grid grid-cols-3 gap-8 py-10 border-t border-[#EBEBEB]"
+                className="grid grid-cols-2 gap-8 py-10 border-t border-[#EBEBEB]"
               >
                 {[
-                  { end: 50, suffix: "+", label: "Projekte" },
                   { end: 98, suffix: "%", label: "Zufriedenheit" },
                   { end: 5, suffix: " J.", label: "Erfahrung" },
                 ].map(item => (
@@ -615,35 +533,6 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
-      <section className="py-40 bg-[#FFFFFF] overflow-hidden">
-        <div className="mb-20 text-center px-6">
-          <HeadingReveal className="font-bebas text-6xl md:text-8xl tracking-widest text-[#111111] uppercase">
-            Was Kunden <span className="text-[#C8A84B]">sagen</span>
-          </HeadingReveal>
-        </div>
-
-        <div className="relative">
-          {/* Fade edges */}
-          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
-
-          <div className="testimonial-track">
-            {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((testi, idx) => (
-              <div
-                key={idx}
-                className="w-[460px] shrink-0 relative pt-12 p-10 border border-[#EBEBEB] hover:border-[#C8A84B] transition-colors duration-500 group mx-4"
-              >
-                <div className="absolute top-0 left-8 text-[#EBEBEB] group-hover:text-[#C8A84B]/20 font-serif text-[120px] leading-none select-none transition-colors duration-500">"</div>
-                <p className="font-cormorant text-xl text-[#111111] mb-10 italic relative z-10">"{testi.text}"</p>
-                <div className="border-t border-[#C8A84B] pt-6 w-12 mb-4" />
-                <h5 className="font-dm-sans font-medium text-[#111111] text-sm tracking-widest mb-1">{testi.name}</h5>
-                <p className="font-dm-mono text-xs text-[#888888] tracking-widest">{testi.role}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── KONTAKT ── */}
       <section id="kontakt" className="py-40 relative bg-[#FAFAF8]">
@@ -654,7 +543,7 @@ function Home({ mobileMenuOpen, setMobileMenuOpen }: HomeProps) {
                 Bereit <br/><span className="text-[#C8A84B]">durchzustarten?</span>
               </HeadingReveal>
               <Reveal delay={0.2}>
-                <p className="font-dm-sans text-[#888888] font-light text-xl mb-12 leading-relaxed max-w-md">
+                <p className="font-dm-sans text-[#888888] font-light text-2xl mb-12 leading-relaxed max-w-md">
                   Lass uns dein nächstes Projekt besprechen. Ob komplettes Re-Design, SEO-Strategie oder Conversion-Optimierung.
                 </p>
                 <MagneticWrap>
@@ -777,7 +666,7 @@ export default function App() {
               </div>
             </div>
             <div className="flex flex-col items-center gap-8">
-              {["leistungen","projekte","ueber-uns","kontakt"].map((id, i) => (
+              {["leistungen","ueber-uns","kontakt"].map((id, i) => (
                 <motion.a
                   key={id}
                   href={`#${id}`}
