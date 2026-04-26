@@ -43,28 +43,35 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
 
     let currentY = 0;
     let targetY = window.scrollY;
+    let maxScroll = 0;
 
     const updateHeight = () => {
       if (content && container) {
-        document.body.style.height = `${content.getBoundingClientRect().height}px`;
+        // offsetHeight = real element height, unaffected by translate transform
+        const h = content.offsetHeight;
+        document.body.style.height = `${h}px`;
+        maxScroll = Math.max(0, h - window.innerHeight);
       }
     };
 
     const handleScroll = () => {
-      targetY = window.scrollY;
+      targetY = Math.min(window.scrollY, maxScroll);
     };
 
     const animate = () => {
       currentY += (targetY - currentY) * 0.10;
-      
+
       if (Math.abs(targetY - currentY) < 0.01) {
         currentY = targetY;
       }
-      
+
+      // Hard clamp so content never drifts past the bottom
+      currentY = Math.max(0, Math.min(currentY, maxScroll));
+
       if (content) {
         content.style.transform = `translate3d(0, -${currentY}px, 0)`;
       }
-      
+
       animationFrameId = requestAnimationFrame(animate);
     };
 
